@@ -214,6 +214,22 @@ function copyWithFeedback(btn, text) {
     });
 }
 
+// === Swipe navigation (mobile) ===
+let touchStartX = 0;
+let touchStartY = 0;
+randomSection.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+randomSection.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return;
+    if (dx < 0) randomNext.click();
+    else randomPrev.click();
+});
+
 // === Keyboard navigation ===
 document.addEventListener('keydown', (e) => {
     if (document.activeElement === searchInput) return;
