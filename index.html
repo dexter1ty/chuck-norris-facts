@@ -4,26 +4,40 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chuck Norris Facts - Recherche</title>
+    <meta name="description" content="Moteur de recherche sur 10 527 Chuck Norris facts. Hommage à Chuck Norris (1940-2026).">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Chuck Norris Facts">
+    <meta property="og:description" content="Moteur de recherche sur 10 527 Chuck Norris facts. Hommage (1940-2026).">
+    <meta property="og:image" content="https://qiwi.ch/norris/assets/images/og-chuck.jpeg">
+    <meta property="og:url" content="https://qiwi.ch/norris/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Chuck Norris Facts">
+    <meta name="twitter:description" content="Moteur de recherche sur 10 527 Chuck Norris facts. Hommage (1940-2026).">
+    <meta name="twitter:image" content="https://qiwi.ch/norris/assets/images/og-chuck.jpeg">
+
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="header">
-        <h1>Chuck Norris Facts</h1>
-        <span class="header-tribute">1940 — 2026</span>
-    </div>
-
-    <!-- Random fact -->
-    <div class="random-section" id="random-section" style="display:none;">
-        <div class="random-card">
-            <p class="random-text" id="random-text"></p>
-            <div class="random-footer">
-                <span class="random-meta" id="random-meta"></span>
-                <div class="random-actions">
-                    <button class="random-nav" id="random-prev" title="Précédent">&#9664;</button>
-                    <button class="random-nav" id="random-next" title="Suivant">&#9654;</button>
-                    <button class="random-copy" id="random-copy">Copier</button>
-                </div>
+    <div class="hero" id="hero">
+        <h1 class="hero-title">Chuck Norris Facts</h1>
+        <span class="hero-tribute">1940 — 2026</span>
+        <div class="hero-quote" id="random-section" style="display:none;">
+            <span class="hero-guillemet open">&#x275D;</span>
+            <p class="hero-text" id="random-text"></p>
+            <span class="hero-guillemet close">&#x275E;</span>
+        </div>
+        <div class="hero-footer" id="hero-footer" style="display:none;">
+            <span class="hero-meta" id="random-meta"></span>
+            <div class="hero-actions">
+                <button class="hero-nav" id="random-prev" title="Précédent">&#9664;</button>
+                <button class="hero-nav" id="random-next" title="Suivant">&#9654;</button>
+                <button class="hero-copy" id="random-copy">Copier</button>
             </div>
         </div>
     </div>

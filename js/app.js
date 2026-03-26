@@ -30,6 +30,7 @@ fetch('facts.json')
         statsDiv.textContent = `${facts.length} facts chargés`;
         showResults(facts);
         randomSection.style.display = 'block';
+        document.getElementById('hero-footer').style.display = 'flex';
         showRandomFact(false);
     })
     .catch(() => {
@@ -48,6 +49,16 @@ function doSearch() {
     if (!query) {
         statsDiv.textContent = `${facts.length} facts`;
         showResults(facts);
+        return;
+    }
+
+    // Recherche par ID (#123)
+    const idMatch = query.match(/^#?(\d+)$/);
+    if (idMatch) {
+        const id = parseInt(idMatch[1]);
+        const filtered = facts.filter(f => f.id === id);
+        statsDiv.textContent = filtered.length ? `Fact #${id}` : 'Aucun résultat';
+        showResults(filtered);
         return;
     }
 
