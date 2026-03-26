@@ -43,7 +43,9 @@ php -S localhost:8000
 ├── css/
 │   └── style.css     # Thème Texas Ranger
 ├── js/
-│   └── app.js        # Recherche, random, lazy load
-└── api/
-    └── add.php       # Endpoint d'ajout de fact (PHP)
+    └── app.js        # Recherche, random, lazy load
 ```
+
+## Licence
+
+[MIT](LICENSE)
