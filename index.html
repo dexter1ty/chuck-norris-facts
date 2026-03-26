@@ -5,156 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chuck Norris Facts - Recherche</title>
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900&display=swap" rel="stylesheet">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            background-color: #f5f0e8;
-            color: #333;
-        }
-
-        .header {
-            background-color: #BFAD82;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .header h1 {
-            font-family: 'Playfair Display', Georgia, serif;
-            color: #5C4202;
-            font-size: 1.6rem;
-            margin: 0;
-        }
-
-        .header .subtitle {
-            color: #5C4202;
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 24px 16px;
-        }
-
-        .search-box {
-            position: sticky;
-            top: 0;
-            background-color: #f5f0e8;
-            padding: 16px 0;
-            z-index: 10;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 16px;
-            font-family: inherit;
-            border: 3px solid #5C4202;
-            border-radius: 6px;
-            background: white;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .search-input:focus {
-            border-color: #BFAD82;
-        }
-
-        .search-input::placeholder {
-            color: #BFAD82;
-        }
-
-        .stats {
-            margin-top: 8px;
-            font-size: 12px;
-            color: #5C4202;
-        }
-
-        .results {
-            margin-top: 8px;
-        }
-
-        .card {
-            background: #fbfbfb;
-            border-left: 10px solid #BFAD82;
-            border-radius: 4px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: border-color 0.15s;
-        }
-
-        .card:hover {
-            border-left-color: #5C4202;
-        }
-
-        .card-body {
-            padding: 12px 16px;
-        }
-
-        .card-text {
-            line-height: 1.5;
-        }
-
-        .card-footer {
-            padding: 4px 16px 8px;
-            font-size: 12px;
-            color: #5C4202;
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid #eee;
-        }
-
-        .card-rating {
-            color: #BFAD82;
-            font-weight: bold;
-        }
-
-        .card-copy {
-            background-color: #5C4202;
-            color: #fbfbfb;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-            font-family: inherit;
-            padding: 4px 12px;
-            border-radius: 4px;
-            transition: background-color 0.15s;
-        }
-
-        .card-copy:hover {
-            background-color: #BFAD82;
-            color: #5C4202;
-        }
-
-        .card-copy.copied {
-            background-color: #BFAD82;
-            color: #5C4202;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #5C4202;
-            font-size: 16px;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            color: #BFAD82;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="header">
         <h1>Chuck Norris Facts</h1>
-        <span class="subtitle">Recherche</span>
+        <span class="header-tribute">1940 — 2026</span>
+    </div>
+
+    <!-- Random fact -->
+    <div class="random-section" id="random-section" style="display:none;">
+        <div class="random-card">
+            <p class="random-text" id="random-text"></p>
+            <div class="random-footer">
+                <span class="random-meta" id="random-meta"></span>
+                <div class="random-actions">
+                    <button class="random-nav" id="random-prev" title="Précédent">&#9664;</button>
+                    <button class="random-nav" id="random-next" title="Suivant">&#9654;</button>
+                    <button class="random-copy" id="random-copy">Copier</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -168,99 +39,6 @@
         </div>
     </div>
 
-    <script>
-        let facts = [];
-        const MAX_DISPLAY = 50;
-
-        const searchInput = document.getElementById('search');
-        const resultsDiv = document.getElementById('results');
-        const statsDiv = document.getElementById('stats');
-        const loadingDiv = document.getElementById('loading');
-
-        fetch('facts.json')
-            .then(r => r.json())
-            .then(data => {
-                facts = data;
-                loadingDiv.style.display = 'none';
-                statsDiv.textContent = `${facts.length} facts chargés`;
-                showResults(facts);
-            })
-            .catch(() => {
-                loadingDiv.textContent = 'Erreur : impossible de charger facts.json';
-            });
-
-        let debounceTimer;
-        searchInput.addEventListener('input', () => {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(doSearch, 200);
-        });
-
-        function doSearch() {
-            const query = searchInput.value.trim().toLowerCase();
-            if (!query) {
-                statsDiv.textContent = `${facts.length} facts`;
-                showResults(facts);
-                return;
-            }
-
-            const words = query.split(/\s+/);
-            const filtered = facts.filter(f => {
-                const t = f.text.toLowerCase();
-                return words.every(w => t.includes(w));
-            });
-
-            statsDiv.textContent = `${filtered.length} résultat${filtered.length !== 1 ? 's' : ''}`;
-            showResults(filtered);
-        }
-
-        function showResults(list) {
-            const limited = list.slice(0, MAX_DISPLAY);
-            if (limited.length === 0) {
-                resultsDiv.innerHTML = '<div class="no-results">Aucun résultat</div>';
-                return;
-            }
-
-            resultsDiv.innerHTML = limited.map(f => `
-                <div class="card" data-id="${f.id}">
-                    <div class="card-body">
-                        <p class="card-text">${escapeHtml(f.text)}</p>
-                    </div>
-                    <div class="card-footer">
-                        <span>#${f.id}</span>
-                        <span class="card-rating">${f.rating !== null ? f.rating + '/10' : ''}</span>
-                        <button class="card-copy" data-text="${escapeAttr(f.text)}">Copier</button>
-                    </div>
-                </div>
-            `).join('');
-
-            if (list.length > MAX_DISPLAY) {
-                resultsDiv.innerHTML += `<div class="no-results">... et ${list.length - MAX_DISPLAY} autres résultats</div>`;
-            }
-        }
-
-        resultsDiv.addEventListener('click', (e) => {
-            const btn = e.target.closest('.card-copy');
-            if (!btn) return;
-            const text = btn.dataset.text;
-            navigator.clipboard.writeText(text).then(() => {
-                btn.textContent = 'Copié !';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = 'Copier';
-                    btn.classList.remove('copied');
-                }, 1500);
-            });
-        });
-
-        function escapeAttr(text) {
-            return text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-
-        function escapeHtml(text) {
-            const d = document.createElement('div');
-            d.textContent = text;
-            return d.innerHTML;
-        }
-    </script>
+    <script src="js/app.js"></script>
 </body>
 </html>
